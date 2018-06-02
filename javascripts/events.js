@@ -61,11 +61,24 @@ const getAllMoviesEvent = () => {
       console.error('error in get all movies', error);
     });
 };
+const deleteMovieFromFirebase = () => {
+  $(document).on('click', '.deleteMovieFromCollectionEvent', (e) => {
+    const movieToDeleteId = $(e.target).closest('.movie').data('firebaseId');
+    firebaseApi.deleteMovieFromDatabase(movieToDeleteId)
+      .then(() => {
+        getAllMoviesEvent();
+      })
+      .catch((error) => {
+        console.error('error from delete movie', error);
+      });
+  });
+};
 
 const initializer = () => {
   myLinks();
   pressEnter();
   saveMovieToWishListEvent();
+  deleteMovieFromFirebase();
 };
 
 module.exports = {

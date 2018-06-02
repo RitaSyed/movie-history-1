@@ -40,9 +40,24 @@ const getAllMovies = () => {
       });
   });
 };
+const deleteMovieFromDatabase = (movieId) => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      method: 'DELETE',
+      url: `${firebaseConfig.databaseURL}/movies/${movieId}.json`,
+    })
+      .done(() => {
+        resolve();
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};;
 
 module.exports = {
   saveMovietoWishList,
   setConfig,
   getAllMovies,
+  deleteMovieFromDatabase,
 };

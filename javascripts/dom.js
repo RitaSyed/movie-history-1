@@ -5,7 +5,7 @@ const domString = (movieArray, config, whereToPrint, myCollectionMode = false) =
       strang += `<div class="row">`;
     };
     strang += `<div class="col-sm-6 col-md-4">`;
-    strang +=   `<div class="thumbnail movie">`;
+    strang +=   `<div class="thumbnail movie" data-firebase-id="${movie.id}">`;
     // print only if it comes from database
     if (myCollectionMode) {
       strang += `<a class="btn deleteMovieFromCollectionEvent">X</a>`;

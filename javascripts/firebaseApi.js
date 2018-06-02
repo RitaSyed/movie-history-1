@@ -40,6 +40,51 @@ const getAllMovies = () => {
       });
   });
 };
+
+const getWatchedMovies = () => {
+  return new Promise((resolve, reject) => {
+    const allMoviesArray = [];
+    $.ajax({
+      method: 'GET',
+      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="isWatched"&equalTo=true`,
+    })
+      .done((allMoviesObject) => {
+        if (allMoviesObject !== null) {
+          Object.keys(allMoviesObject).forEach((fbKey) => {
+            allMoviesObject[fbKey].id = fbKey;
+            allMoviesArray.push(allMoviesObject[fbKey]);
+          });
+        }
+        resolve(allMoviesArray);
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};
+
+const getWishlistMovies = () => {
+  return new Promise((resolve, reject) => {
+    const allMoviesArray = [];
+    $.ajax({
+      method: 'GET',
+      url: `${firebaseConfig.databaseURL}/movies.json?orderBy="isWatched"&equalTo=false`,
+    })
+      .done((allMoviesObject) => {
+        if (allMoviesObject !== null) {
+          Object.keys(allMoviesObject).forEach((fbKey) => {
+            allMoviesObject[fbKey].id = fbKey;
+            allMoviesArray.push(allMoviesObject[fbKey]);
+          });
+        }
+        resolve(allMoviesArray);
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};
+
 const deleteMovieFromDatabase = (movieId) => {
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -53,11 +98,30 @@ const deleteMovieFromDatabase = (movieId) => {
         reject(error);
       });
   });
-};;
+};
+
+const updateMovieToWatchedInDatabase = (updatedMovie, movieId) => {
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      method: 'PUT',
+      url: `${firebaseConfig.databaseURL}/movies/${movieId}.json`,
+      data: JSON.stringify(updatedMovie),
+    })
+      .done((modifiedMovie) => {
+        resolve(modifiedMovie);
+      })
+      .fail((error) => {
+        reject(error);
+      });
+  });
+};
 
 module.exports = {
   saveMovietoWishList,
   setConfig,
   getAllMovies,
   deleteMovieFromDatabase,
+  updateMovieToWatchedInDatabase,
+  getWatchedMovies,
+  getWishlistMovies,
 };
